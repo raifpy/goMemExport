@@ -1,5 +1,7 @@
 package main
 
+import "unsafe"
+
 type Value struct {
 	Zamazingo [64]byte // 64
 	private   uint32   // 4 byte
@@ -7,4 +9,4 @@ type Value struct {
 
 }
 
-const VALUE_SIZE = 72
+var valueSize int = int(unsafe.Sizeof(Value{}))

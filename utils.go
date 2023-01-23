@@ -1,26 +1,26 @@
 package main
 
 import (
+	"bytes"
 	"reflect"
 	"unsafe"
 )
 
-func stob(s string) [64]byte {
-	if len(s) >= 64 {
-		return *(*[64]byte)(unsafe.Pointer(&s))
-	}
-	var b [64]byte
-	copy(b[:], s)
-	return b
+// zero allocation convert
+func stob(s string) []byte {
+	return *(*[]byte)(unsafe.Pointer(&s))
 }
 
-func btos(b [64]byte) string {
-	var cut = 64
-	for i := 63; i >= 0; i-- {
-		if b[i] == 0 {
-			cut = i
-			break
-		}
+// allocates 64byte and copies string into
+func stob64(s string) (b [64]byte) {
+	copy(b[:], stob(s))
+	return
+}
+
+func btos(b []byte) string {
+	var cut = bytes.IndexByte(b, 0) // Go Strings are not like C strings. 0 (\0) is not just end of string, it is also breaking.
+	if cut == -1 {
+		cut = 64
 	}
 	return (*(*string)(unsafe.Pointer(&reflect.StringHeader{
 		Data: uintptr(unsafe.Pointer(&b[0])),

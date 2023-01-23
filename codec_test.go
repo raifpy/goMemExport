@@ -1,19 +1,20 @@
 package main
 
 import (
-	"fmt"
 	"testing"
+	"unsafe"
 )
 
-func TestCODEC(t *testing.T) {
+func TestCodec(t *testing.T) {
 	var v = &Value{
-		private:   18,
-		Zamazingo: [64]byte{112, 113, 65, 66},
+		private:   1 << 31,
+		Zamazingo: stob64("Hello World!"),
 		Confirm:   true,
 	}
 
-	encoded := v.encode()
+	encoded := encode(v)
 	v2 := decode(encoded)
-	fmt.Printf("v2.private: %v\n", v2.private)
-	fmt.Printf("pointer of v: %p\npointer of v2: %p", v, v2)
+	if unsafe.Pointer(v) != unsafe.Pointer(&encoded[0]) || unsafe.Pointer(v2) != unsafe.Pointer(&encoded[0]) {
+		t.Fatalf("unexcepted conversion object: %p encoded: %p decoded: %p", v, v2, encoded)
+	}
 }

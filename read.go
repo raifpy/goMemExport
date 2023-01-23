@@ -16,8 +16,7 @@ func read() error {
 	objects := decodeArray(file)
 	delay := time.Since(now)
 	for i, v := range objects {
-		fmt.Printf("i: %v\n", i)
-		fmt.Printf("v.Zamazingo: %v\n", btos(v.Zamazingo))
+		fmt.Printf("%d:%v\n", i, btos(v.Zamazingo[:]))
 		//fmt.Printf("i: %v z: %v p: %v c: %v\n", i, btos(v.Zamazingo), v.private, v.Confirm)
 	}
 

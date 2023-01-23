@@ -15,7 +15,7 @@ func generate(to int) []Value {
 	for i := range list {
 		list[i] = Value{
 			private:   gofakeit.Uint32(),
-			Zamazingo: stob(gofakeit.Address().Address),
+			Zamazingo: stob64(gofakeit.Address().Address),
 			Confirm:   gofakeit.Bool(),
 		}
 	}
